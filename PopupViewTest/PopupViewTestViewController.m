@@ -53,7 +53,6 @@
 		else
 			[popup showFromBarButtonItem:sender inView:self.view animated:animationSwitch.on];
 		[popup addTarget:self action:@selector(didTouchPopupView:)];
-		[popup release];
 		[popup setDelegate:self];
 	}
 	else if (!modalSwitch.on) {
@@ -95,7 +94,6 @@
 		else
 			[popup showAtPoint:[touch locationInView:self.view] inView:self.view animated:animationSwitch.on];
 		[popup addTarget:self action:@selector(didTouchPopupView:)];
-		[popup release];
 		[popup setDelegate:self];
 	}
 	else if (!modalSwitch.on) {
@@ -104,9 +102,5 @@
 	}
 }
 
-- (void)dealloc {
-	[messages release];
-    [super dealloc];
-}
 
 @end

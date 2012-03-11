@@ -33,9 +33,9 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface TouchPeekView : UIView {
-	SNPopupView *delegate;
+	SNPopupView *__unsafe_unretained delegate;
 }
-@property (nonatomic, assign) SNPopupView *delegate;
+@property (nonatomic, unsafe_unretained) SNPopupView *delegate;
 @end
 
 @interface SNPopupView(Private)
@@ -115,7 +115,7 @@
 - (id) initWithImage:(UIImage*)newImage {
 	self = [super init];
 	if (self != nil) {
-		image = [newImage retain];
+		image = newImage;
 		
         // Initialization code
 		[self setBackgroundColor:[UIColor clearColor]];
@@ -132,7 +132,7 @@
 - (id) initWithContentView:(UIView*)newContentView contentSize:(CGSize)contentSize {
 	self = [super init];
 	if (self != nil) {
-		contentView = [newContentView retain];
+		contentView = newContentView;
 		
         // Initialization code
 		[self setBackgroundColor:[UIColor clearColor]];
@@ -158,7 +158,6 @@
 	UIWindow *window = [[UIApplication sharedApplication] keyWindow];
 
 	[peekView removeFromSuperview];
-	[peekView release];
 	peekView = nil;
 	peekView = [[TouchPeekView alloc] initWithFrame:window.frame];
 	[peekView setDelegate:self];
@@ -665,11 +664,6 @@
 	CGGradientRelease(gradient);
 	CGGradientRelease(gradient2);
 	
-	[peekView release];
-	[title release];
-	[image release];
-	[contentView release];
-    [super dealloc];
 }
 
 

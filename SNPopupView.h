@@ -92,14 +92,14 @@ typedef enum {
 	SEL			action;
 	
 	TouchPeekView	*peekView;
-	id<SNPopupViewModalDelegate>delegate;
+	id<SNPopupViewModalDelegate>__unsafe_unretained delegate;
 	
 	BOOL		animatedWhenAppering;
 }
 @property (nonatomic, readonly) NSString *title;
 @property (nonatomic, readonly) UIImage *image;
 @property (nonatomic, readonly) UIView *contentView;
-@property (nonatomic, assign) id <SNPopupViewModalDelegate> delegate;
+@property (nonatomic, unsafe_unretained) id <SNPopupViewModalDelegate> delegate;
 
 - (id)initWithString:(NSString*)newValue withFontOfSize:(float)newFontSize;
 - (id)initWithString:(NSString*)newValue;
