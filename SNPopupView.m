@@ -64,7 +64,7 @@
 
 @implementation SNPopupView
 
-@synthesize title, image, contentView, delegate;
+@synthesize title, image, contentView, delegate, shadowOffset, contentOffset, rootArrowOverlap, rootArrowSize;
 
 #pragma mark - Prepare
 
@@ -86,12 +86,23 @@
 	CGColorSpaceRelease(rgb);
 }
 
+- (id) init {
+    self = [super init];
+    if (self) {
+        self.shadowOffset = SHADOW_OFFSET;
+        self.contentOffset = CONTENT_OFFSET;
+        self.rootArrowSize = POPUP_ROOT_SIZE;
+        self.rootArrowOverlap = POPUP_ROOT_Y_OVERLAP;
+    }
+    return self;
+}
+
 - (id) initWithString:(NSString*)newValue {
 	return [self initWithString:newValue withFontOfSize:DEFAULT_TITLE_SIZE];
 }
 
 - (id) initWithString:(NSString*)newValue withFontOfSize:(float)newFontSize {
-	self = [super init];
+	self = [self init];
 	if (self != nil) {
 		title = [newValue copy];
 		
@@ -113,7 +124,7 @@
 }
 
 - (id) initWithImage:(UIImage*)newImage {
-	self = [super init];
+	self = [self init];
 	if (self != nil) {
 		image = newImage;
 		
@@ -130,7 +141,7 @@
 }
 
 - (id) initWithContentView:(UIView*)newContentView contentSize:(CGSize)contentSize {
-	self = [super init];
+	self = [self init];
 	if (self != nil) {
 		contentView = newContentView;
 		
@@ -150,6 +161,12 @@
 		target = newTarget;
 		action = newAction;
 	}
+}
+
+// simple convenience method
+- (void)setBackgroundBoxImage:(UIImage *)backgroundBoxImage backgroundArrowImage:(UIImage *)backgroundArrowImage {
+    self.backgroundBoxImage = backgroundBoxImage;
+    self.backgroundArrowImage = backgroundArrowImage;
 }
 
 #pragma mark - Present modal
@@ -184,7 +201,7 @@
 }
 
 - (void)showAtPoint:(CGPoint)p inView:(UIView*)inView animated:(BOOL)animated {
-	if ((p.y - contentBounds.size.height - POPUP_ROOT_SIZE.height - 2 * CONTENT_OFFSET.height - SHADOW_OFFSET.height) < 0) {
+	if ((p.y - contentBounds.size.height - self.rootArrowSize.height - 2 * self.contentOffset.height - self.shadowOffset.height) < 0) {
 		direction = SNPopupViewDown;
 	}
 	else {
@@ -196,26 +213,28 @@
 		pointToBeShown = p;
 		
 		// calc content area
+        // the x starting point is the click point minus half the contentWidth
 		contentRect.origin.x = p.x - (int)contentBounds.size.width/2;
-		contentRect.origin.y = p.y - CONTENT_OFFSET.height - POPUP_ROOT_SIZE.height - contentBounds.size.height;
+        // y of contentRect = content offset - arrow height + arrow overlap? - content height
+		contentRect.origin.y = p.y - self.contentOffset.height - self.rootArrowSize.height - contentBounds.size.height;
 		contentRect.size = contentBounds.size;
 		
 		// calc popup area
 		popupBounds.origin = CGPointMake(0, 0);
-		popupBounds.size.width = contentBounds.size.width + CONTENT_OFFSET.width + CONTENT_OFFSET.width;
-		popupBounds.size.height = contentBounds.size.height + CONTENT_OFFSET.height + CONTENT_OFFSET.height + POPUP_ROOT_SIZE.height;
+		popupBounds.size.width = contentBounds.size.width + self.contentOffset.width + self.contentOffset.width;
+		popupBounds.size.height = contentBounds.size.height + self.contentOffset.height + self.contentOffset.height + self.rootArrowSize.height;
 		
-		popupRect.origin.x = contentRect.origin.x - CONTENT_OFFSET.width;
-		popupRect.origin.y = contentRect.origin.y - CONTENT_OFFSET.height;
+		popupRect.origin.x = contentRect.origin.x - self.contentOffset.width;
+		popupRect.origin.y = contentRect.origin.y - self.contentOffset.height;
 		popupRect.size = popupBounds.size;
 		
 		// calc self size and rect
 		viewBounds.origin = CGPointMake(0, 0);
-		viewBounds.size.width = popupRect.size.width + SHADOW_OFFSET.width + SHADOW_OFFSET.width;
-		viewBounds.size.height = popupRect.size.height + SHADOW_OFFSET.height + SHADOW_OFFSET.height;
+		viewBounds.size.width = popupRect.size.width + self.shadowOffset.width + self.shadowOffset.width;
+		viewBounds.size.height = popupRect.size.height + self.shadowOffset.height + self.shadowOffset.height;
 		
-		viewRect.origin.x = popupRect.origin.x - SHADOW_OFFSET.width;
-		viewRect.origin.y = popupRect.origin.y - SHADOW_OFFSET.height;
+		viewRect.origin.x = popupRect.origin.x - self.shadowOffset.width;
+		viewRect.origin.y = popupRect.origin.y - self.shadowOffset.height;
 		viewRect.size = viewBounds.size;
 
 		float left_viewRect = viewRect.origin.x + viewRect.size.width;
@@ -253,25 +272,25 @@
 		
 		// calc content area
 		contentRect.origin.x = p.x - (int)contentBounds.size.width/2;
-		contentRect.origin.y = p.y + CONTENT_OFFSET.height + POPUP_ROOT_SIZE.height;
+		contentRect.origin.y = p.y + self.contentOffset.height + self.rootArrowSize.height;
 		contentRect.size = contentBounds.size;
 		
 		// calc popup area
 		popupBounds.origin = CGPointMake(0, 0);
-		popupBounds.size.width = contentBounds.size.width + CONTENT_OFFSET.width + CONTENT_OFFSET.width;
-		popupBounds.size.height = contentBounds.size.height + CONTENT_OFFSET.height + CONTENT_OFFSET.height + POPUP_ROOT_SIZE.height;
+		popupBounds.size.width = contentBounds.size.width + self.contentOffset.width + self.contentOffset.width;
+		popupBounds.size.height = contentBounds.size.height + self.contentOffset.height + self.contentOffset.height + self.rootArrowSize.height;
 		
-		popupRect.origin.x = contentRect.origin.x - CONTENT_OFFSET.width;
-		popupRect.origin.y = contentRect.origin.y - CONTENT_OFFSET.height - POPUP_ROOT_SIZE.height;
+		popupRect.origin.x = contentRect.origin.x - self.contentOffset.width;
+		popupRect.origin.y = contentRect.origin.y - self.contentOffset.height - self.rootArrowSize.height;
 		popupRect.size = popupBounds.size;
 		
 		// calc self size and rect
 		viewBounds.origin = CGPointMake(0, 0);
-		viewBounds.size.width = popupRect.size.width + SHADOW_OFFSET.width + SHADOW_OFFSET.width;
-		viewBounds.size.height = popupRect.size.height + SHADOW_OFFSET.height + SHADOW_OFFSET.height;
+		viewBounds.size.width = popupRect.size.width + self.shadowOffset.width + self.shadowOffset.width;
+		viewBounds.size.height = popupRect.size.height + self.shadowOffset.height + self.shadowOffset.height;
 		
-		viewRect.origin.x = popupRect.origin.x - SHADOW_OFFSET.width;
-		viewRect.origin.y = popupRect.origin.y - SHADOW_OFFSET.height;
+		viewRect.origin.x = popupRect.origin.x - self.shadowOffset.width;
+		viewRect.origin.y = popupRect.origin.y - self.shadowOffset.height;
 		viewRect.size = viewBounds.size;
 		
 		float left_viewRect = viewRect.origin.x + viewRect.size.width;
@@ -378,7 +397,7 @@
 	float r4 = 0.8;
 	float r5 = 1;
 	
-	float y_offset =  (popupRect.size.height/2 - POPUP_ROOT_SIZE.height);
+	float y_offset =  (popupRect.size.height/2 - self.rootArrowSize.height);
 	
 	CAKeyframeAnimation *positionAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
 	CATransform3D tm1, tm2, tm3, tm4, tm5;
@@ -469,7 +488,7 @@
 	float r1 = 1.0;
 	float r2 = 0.1;
 	
-	float y_offset =  (popupRect.size.height/2 - POPUP_ROOT_SIZE.height);
+	float y_offset =  (popupRect.size.height/2 - self.rootArrowSize.height);
 	
 	CAKeyframeAnimation *alphaAnimation = [CAKeyframeAnimation	animationWithKeyPath:@"opacity"];
 	alphaAnimation.removedOnCompletion = NO;
@@ -520,16 +539,16 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
 	
 	if (direction & SNPopupViewUp) {
-		rect.size.height -= POPUP_ROOT_SIZE.height;
+		rect.size.height -= self.rootArrowSize.height;
 		
 		// get points
 		CGFloat minx = CGRectGetMinX( rect ), midx = CGRectGetMidX( rect ), maxx = CGRectGetMaxX( rect );
 		CGFloat miny = CGRectGetMinY( rect ), midy = CGRectGetMidY( rect ), maxy = CGRectGetMaxY( rect );
 		
-		CGFloat popRightEdgeX = popPoint.x + (int)POPUP_ROOT_SIZE.width / 2;
+		CGFloat popRightEdgeX = popPoint.x + (int)self.rootArrowSize.width / 2;
 		CGFloat popRightEdgeY = maxy;
 		
-		CGFloat popLeftEdgeX = popPoint.x - (int)POPUP_ROOT_SIZE.width / 2;
+		CGFloat popLeftEdgeX = popPoint.x - (int)self.rootArrowSize.width / 2;
 		CGFloat popLeftEdgeY = maxy;
 		
 		CGContextMoveToPoint(context, minx, midy);
@@ -546,17 +565,17 @@
 		
 	}
 	else {
-		rect.origin.y += POPUP_ROOT_SIZE.height;
-		rect.size.height -= POPUP_ROOT_SIZE.height;
+		rect.origin.y += self.rootArrowSize.height;
+		rect.size.height -= self.rootArrowSize.height;
 		
 		// get points
 		CGFloat minx = CGRectGetMinX( rect ), midx = CGRectGetMidX( rect ), maxx = CGRectGetMaxX( rect );
 		CGFloat miny = CGRectGetMinY( rect ), midy = CGRectGetMidY( rect ), maxy = CGRectGetMaxY( rect );
 		
-		CGFloat popRightEdgeX = popPoint.x + (int)POPUP_ROOT_SIZE.width / 2;
+		CGFloat popRightEdgeX = popPoint.x + (int)self.rootArrowSize.width / 2;
 		CGFloat popRightEdgeY = miny;
 		
-		CGFloat popLeftEdgeX = popPoint.x - (int)POPUP_ROOT_SIZE.width / 2;
+		CGFloat popLeftEdgeX = popPoint.x - (int)self.rootArrowSize.width / 2;
 		CGFloat popLeftEdgeY = miny;
 		
 		CGContextMoveToPoint(context, minx, midy);
@@ -568,30 +587,6 @@
 		CGContextAddArcToPoint(context, maxx, maxy, midx, maxy, radius);
 		CGContextAddArcToPoint(context, minx, maxy, minx, midy, radius);
 	}
-}
-
-- (void)makeGrowingPathCircleCornerRect:(CGRect)rect radius:(float)radius {
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	
-	rect.origin.y += 1;
-	rect.origin.x += 1;
-	rect.size.width -= 2;
-	
-	
-    // get points
-    CGFloat minx = CGRectGetMinX( rect ), midx = CGRectGetMidX( rect ), maxx = CGRectGetMaxX( rect );
-    CGFloat miny = CGRectGetMinY( rect ), midy = CGRectGetMidY( rect );
-	
-	CGFloat rightEdgeX = minx;
-	CGFloat rightEdgeY = midy - 10;
-	
-	CGFloat leftEdgeX = maxx;
-	CGFloat leftEdgeY = midy - 10;
-	
-    CGContextMoveToPoint(context, rightEdgeX, rightEdgeY);
-    CGContextAddArcToPoint(context, minx, miny, midx, miny, radius);
-    CGContextAddArcToPoint(context, maxx, miny, maxx, midy, radius);
-    CGContextAddLineToPoint(context, leftEdgeX, leftEdgeY);
 }
 
 #pragma mark - Override
@@ -621,30 +616,42 @@
 	CGContextFillRect(context, contentRect);
 #endif
 	
-	// draw shadow, and base
-	CGContextSaveGState(context);
-	
-	CGContextSetRGBFillColor(context, 0.1, 0.1, 0.1, ALPHA);
-	CGContextSetShadowWithColor (context, CGSizeMake(0, 2), 2, [[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5] CGColor]);
-	[self makePathCircleCornerRect:popupRect radius:10 popPoint:pointToBeShown];
-	CGContextClosePath(context);
-	CGContextFillPath(context);
-	CGContextRestoreGState(context);
-
-	// draw body
-	CGContextSaveGState(context);
-	[self makePathCircleCornerRect:popupRect radius:10 popPoint:pointToBeShown];
-	CGContextClip(context);
-	if (direction & SNPopupViewUp) {
-		CGContextDrawLinearGradient(context, gradient, CGPointMake(0, popupRect.origin.y), CGPointMake(0, popupRect.origin.y + (int)(popupRect.size.height-POPUP_ROOT_SIZE.height)/2), 0);
-		CGContextDrawLinearGradient(context, gradient2, CGPointMake(0, popupRect.origin.y + (int)(popupRect.size.height-POPUP_ROOT_SIZE.height)/2), CGPointMake(0, popupRect.origin.y + popupRect.size.height-POPUP_ROOT_SIZE.height), 0);
-	}
-	else {
-		int h = (int)(popupRect.size.height - POPUP_ROOT_SIZE.height);
-		CGContextDrawLinearGradient(context, gradient, CGPointMake(0, popupRect.origin.y + POPUP_ROOT_SIZE.height), CGPointMake(0, popupRect.origin.y + h/2 + POPUP_ROOT_SIZE.height), 0);
-		CGContextDrawLinearGradient(context, gradient2, CGPointMake(0, popupRect.origin.y + h/2 + POPUP_ROOT_SIZE.height), CGPointMake(0, popupRect.origin.y + popupRect.size.height), 0);
-	}
-	CGContextRestoreGState(context);
+    
+    if (!self.backgroundBoxImage || !self.backgroundArrowImage) {
+        // draw shadow, and base
+        CGContextSaveGState(context);
+        
+        CGContextSetRGBFillColor(context, 0.1, 0.1, 0.1, ALPHA);
+        CGContextSetShadowWithColor (context, CGSizeMake(0, 2), 2, [[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5] CGColor]);
+        [self makePathCircleCornerRect:popupRect radius:10 popPoint:pointToBeShown];
+        CGContextClosePath(context);
+        CGContextFillPath(context);
+        CGContextRestoreGState(context);
+        
+        // draw body
+        CGContextSaveGState(context);
+        [self makePathCircleCornerRect:popupRect radius:10 popPoint:pointToBeShown];
+        CGContextClip(context);
+        if (direction & SNPopupViewUp) {
+            CGContextDrawLinearGradient(context, gradient, CGPointMake(0, popupRect.origin.y), CGPointMake(0, popupRect.origin.y + (int)(popupRect.size.height-self.rootArrowSize.height)/2), 0);
+            CGContextDrawLinearGradient(context, gradient2, CGPointMake(0, popupRect.origin.y + (int)(popupRect.size.height-self.rootArrowSize.height)/2), CGPointMake(0, popupRect.origin.y + popupRect.size.height-self.rootArrowSize.height), 0);
+        }
+        else {
+            int h = (int)(popupRect.size.height - self.rootArrowSize.height);
+            CGContextDrawLinearGradient(context, gradient, CGPointMake(0, popupRect.origin.y + self.rootArrowSize.height), CGPointMake(0, popupRect.origin.y + h/2 + self.rootArrowSize.height), 0);
+            CGContextDrawLinearGradient(context, gradient2, CGPointMake(0, popupRect.origin.y + h/2 + self.rootArrowSize.height), CGPointMake(0, popupRect.origin.y + popupRect.size.height), 0);
+        }
+        CGContextRestoreGState(context);
+    } else {
+        if (direction & SNPopupViewUp) {
+            // draw background image
+            UIImage *resizeableBackgroundImage = [self.backgroundBoxImage resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
+            
+            // draw arrow
+        }
+    }
+    
+    
 	
 	// draw content
 	if ([title length]) {

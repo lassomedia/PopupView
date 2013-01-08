@@ -79,14 +79,17 @@
 	if (popup == nil) {
 		if (currentMessageIndex == 0) {
 			popup = [[SNPopupView alloc] initWithImage:[UIImage imageNamed:@"2tchSmall.png"]];
+            [popup setBackgroundBoxImage:[UIImage imageNamed:@"callout-box.png"] backgroundArrowImage:[UIImage imageNamed:@"callout-arrow.png"]];
 			currentMessageIndex++;
 		}
 		else if (currentMessageIndex == 1) {
 			popup = [[SNPopupView alloc] initWithString:@"test message" withFontOfSize:16];
+            [popup setBackgroundBoxImage:[UIImage imageNamed:@"callout-box.png"] backgroundArrowImage:[UIImage imageNamed:@"callout-arrow.png"]];
 			currentMessageIndex++;
 		}
 		else if (currentMessageIndex == 2) {
 			popup = [[SNPopupView alloc] initWithContentView:testContentView contentSize:CGSizeMake(203, 63)];
+            [popup setBackgroundBoxImage:[UIImage imageNamed:@"callout-box.png"] backgroundArrowImage:[UIImage imageNamed:@"callout-arrow.png"]];
 			currentMessageIndex = 0;
 		}
 		if (modalSwitch.on)

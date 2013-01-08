@@ -25,6 +25,14 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
+		717B7ADC169C9E0E001046E4 /* callout-arrow-black.png in Resources */ = {isa = PBXBuildFile; fileRef = 717B7AD4169C9E0E001046E4 /* callout-arrow-black.png */; };
+		717B7ADD169C9E0E001046E4 /* callout-arrow-black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 717B7AD5169C9E0E001046E4 /* callout-arrow-black@2x.png */; };
+		717B7ADE169C9E0E001046E4 /* callout-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 717B7AD6169C9E0E001046E4 /* callout-arrow.png */; };
+		717B7ADF169C9E0E001046E4 /* callout-arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 717B7AD7169C9E0E001046E4 /* callout-arrow@2x.png */; };
+		717B7AE0169C9E0E001046E4 /* callout-box-black.png in Resources */ = {isa = PBXBuildFile; fileRef = 717B7AD8169C9E0E001046E4 /* callout-box-black.png */; };
+		717B7AE1169C9E0E001046E4 /* callout-box-black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 717B7AD9169C9E0E001046E4 /* callout-box-black@2x.png */; };
+		717B7AE2169C9E0E001046E4 /* callout-box.png in Resources */ = {isa = PBXBuildFile; fileRef = 717B7ADA169C9E0E001046E4 /* callout-box.png */; };
+		717B7AE3169C9E0E001046E4 /* callout-box@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 717B7ADB169C9E0E001046E4 /* callout-box@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +61,14 @@
 		1D6058910D05DD3D006BFB54 /* PopupViewTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PopupViewTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		717B7AD4169C9E0E001046E4 /* callout-arrow-black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "callout-arrow-black.png"; sourceTree = "<group>"; };
+		717B7AD5169C9E0E001046E4 /* callout-arrow-black@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "callout-arrow-black@2x.png"; sourceTree = "<group>"; };
+		717B7AD6169C9E0E001046E4 /* callout-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "callout-arrow.png"; sourceTree = "<group>"; };
+		717B7AD7169C9E0E001046E4 /* callout-arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "callout-arrow@2x.png"; sourceTree = "<group>"; };
+		717B7AD8169C9E0E001046E4 /* callout-box-black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "callout-box-black.png"; sourceTree = "<group>"; };
+		717B7AD9169C9E0E001046E4 /* callout-box-black@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "callout-box-black@2x.png"; sourceTree = "<group>"; };
+		717B7ADA169C9E0E001046E4 /* callout-box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "callout-box.png"; sourceTree = "<group>"; };
+		717B7ADB169C9E0E001046E4 /* callout-box@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "callout-box@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +111,7 @@
 		14FDAB9613977B3E008BF9D5 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				717B7AD3169C9E0E001046E4 /* callouts */,
 				14FDAB9713977B3E008BF9D5 /* 2tchSmall.png */,
 				14FDAB9813977B3E008BF9D5 /* image */,
 				14FDAB9E13977B3E008BF9D5 /* MainWindow.xib */,
@@ -149,6 +166,21 @@
 				1427AFDE127F02840082F84D /* QuartzCore.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		717B7AD3169C9E0E001046E4 /* callouts */ = {
+			isa = PBXGroup;
+			children = (
+				717B7AD4169C9E0E001046E4 /* callout-arrow-black.png */,
+				717B7AD5169C9E0E001046E4 /* callout-arrow-black@2x.png */,
+				717B7AD6169C9E0E001046E4 /* callout-arrow.png */,
+				717B7AD7169C9E0E001046E4 /* callout-arrow@2x.png */,
+				717B7AD8169C9E0E001046E4 /* callout-box-black.png */,
+				717B7AD9169C9E0E001046E4 /* callout-box-black@2x.png */,
+				717B7ADA169C9E0E001046E4 /* callout-box.png */,
+				717B7ADB169C9E0E001046E4 /* callout-box@2x.png */,
+			);
+			path = callouts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,6 +244,14 @@
 				14FDABA613977B3E008BF9D5 /* MainWindow.xib in Resources */,
 				14FDABA713977B3E008BF9D5 /* PopupViewTestViewController.xib in Resources */,
 				14B7E42313BD9DB5007C8935 /* MainWindow-iPad.xib in Resources */,
+				717B7ADC169C9E0E001046E4 /* callout-arrow-black.png in Resources */,
+				717B7ADD169C9E0E001046E4 /* callout-arrow-black@2x.png in Resources */,
+				717B7ADE169C9E0E001046E4 /* callout-arrow.png in Resources */,
+				717B7ADF169C9E0E001046E4 /* callout-arrow@2x.png in Resources */,
+				717B7AE0169C9E0E001046E4 /* callout-box-black.png in Resources */,
+				717B7AE1169C9E0E001046E4 /* callout-box-black@2x.png in Resources */,
+				717B7AE2169C9E0E001046E4 /* callout-box.png in Resources */,
+				717B7AE3169C9E0E001046E4 /* callout-box@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

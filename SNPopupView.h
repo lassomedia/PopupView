@@ -35,6 +35,7 @@
 #define SHADOW_OFFSET					CGSizeMake(10, 10)
 #define CONTENT_OFFSET					CGSizeMake(10, 10)
 #define POPUP_ROOT_SIZE					CGSizeMake(20, 10)
+#define POPUP_ROOT_Y_OVERLAP			0
 
 #define HORIZONTAL_SAFE_MARGIN			30
 
@@ -101,6 +102,14 @@ typedef enum {
 @property (nonatomic, readonly) UIView *contentView;
 @property (nonatomic, unsafe_unretained) id <SNPopupViewModalDelegate> delegate;
 
+@property (nonatomic, strong) UIImage *backgroundBoxImage;
+@property (nonatomic, strong) UIImage *backgroundArrowImage;
+
+@property (nonatomic) CGSize shadowOffset;
+@property (nonatomic) CGSize contentOffset;
+@property (nonatomic) CGSize rootArrowSize;
+@property (nonatomic) NSInteger rootArrowOverlap;
+
 - (id)initWithString:(NSString*)newValue withFontOfSize:(float)newFontSize;
 - (id)initWithString:(NSString*)newValue;
 - (id)initWithImage:(UIImage*)newImage;
@@ -118,4 +127,6 @@ typedef enum {
 - (void)dismissModal;
 
 - (void)addTarget:(id)target action:(SEL)action;
+
+- (void)setBackgroundBoxImage:(UIImage *)backgroundBoxImage backgroundArrowImage:(UIImage *)backgroundArrowImage;
 @end
