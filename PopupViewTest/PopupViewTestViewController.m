@@ -89,9 +89,10 @@
 			popup = [[SNPopupView alloc] initWithContentView:testContentView contentSize:CGSizeMake(203, 63)];
 			currentMessageIndex = 0;
 		}
-        [popup setBackgroundBoxImage:[UIImage imageNamed:@"callout-box.png"] backgroundArrowImage:[UIImage imageNamed:@"callout-arrow.png"]];
+
+        [popup setBackgroundBoxImage:[UIImage imageNamed:@"callout-box-black.png"] backgroundArrowImage:[UIImage imageNamed:@"callout-arrow-black.png"]];
         popup.rootArrowOverlap = 1;
-//        popup.forceDirection = SNPopupViewUp;
+        popup.forceDirection = SNPopupViewUp;
         
 		if (modalSwitch.on)
 			[popup presentModalAtPoint:[touch locationInView:self.view] inView:self.view animated:animationSwitch.on];

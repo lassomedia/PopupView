@@ -114,7 +114,7 @@
 		
 		CGSize titleRenderingSize = [title sizeWithFont:font];
 		
-		contentBounds = CGRectMake(0, 0, 0, 0);
+		contentBounds = CGRectZero;
 		contentBounds.size = titleRenderingSize;
 		
 		[self setupGradientColors];
@@ -131,7 +131,7 @@
         // Initialization code
 		[self setBackgroundColor:[UIColor clearColor]];
 		
-		contentBounds = CGRectMake(0, 0, 0, 0);
+		contentBounds = CGRectZero;
 		contentBounds.size = image.size;
 		
 		[self setupGradientColors];
@@ -148,7 +148,7 @@
         // Initialization code
 		[self setBackgroundColor:[UIColor clearColor]];
 		
-		contentBounds = CGRectMake(0, 0, 0, 0);
+		contentBounds = CGRectZero;
 		contentBounds.size = contentSize;
 		
 		[self setupGradientColors];
@@ -169,6 +169,7 @@
     self.backgroundArrowImage = backgroundArrowImage;
     // images don't use the shadow offset
     self.shadowOffset = CGSizeZero;
+    // or the root arrow size
     self.rootArrowSize = CGSizeZero;
 }
 
