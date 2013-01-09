@@ -64,7 +64,7 @@
 
 @implementation SNPopupView
 
-@synthesize title, image, contentView, delegate, shadowOffset, contentOffset, rootArrowOverlap, rootArrowSize;
+@synthesize title, image, contentView, delegate, shadowOffset, contentOffset, rootArrowOverlap, rootArrowSize, forceDirection;
 
 #pragma mark - Prepare
 
@@ -167,6 +167,9 @@
 - (void)setBackgroundBoxImage:(UIImage *)backgroundBoxImage backgroundArrowImage:(UIImage *)backgroundArrowImage {
     self.backgroundBoxImage = backgroundBoxImage;
     self.backgroundArrowImage = backgroundArrowImage;
+    // images don't use the shadow offset
+    self.shadowOffset = CGSizeZero;
+    self.rootArrowSize = CGSizeZero;
 }
 
 #pragma mark - Present modal
@@ -201,12 +204,17 @@
 }
 
 - (void)showAtPoint:(CGPoint)p inView:(UIView*)inView animated:(BOOL)animated {
+    
 	if ((p.y - contentBounds.size.height - self.rootArrowSize.height - 2 * self.contentOffset.height - self.shadowOffset.height) < 0) {
 		direction = SNPopupViewDown;
 	}
 	else {
 		direction = SNPopupViewUp;
 	}
+    
+    if (self.forceDirection) {
+        direction = self.forceDirection;
+    }
 	
 	if (direction & SNPopupViewUp) {
 
@@ -215,14 +223,14 @@
 		// calc content area
         // the x starting point is the click point minus half the contentWidth
 		contentRect.origin.x = p.x - (int)contentBounds.size.width/2;
-        // y of contentRect = content offset - arrow height + arrow overlap? - content height
+        // y of contentRect = content offset - arrow height - content height
 		contentRect.origin.y = p.y - self.contentOffset.height - self.rootArrowSize.height - contentBounds.size.height;
 		contentRect.size = contentBounds.size;
 		
 		// calc popup area
 		popupBounds.origin = CGPointMake(0, 0);
 		popupBounds.size.width = contentBounds.size.width + self.contentOffset.width + self.contentOffset.width;
-		popupBounds.size.height = contentBounds.size.height + self.contentOffset.height + self.contentOffset.height + self.rootArrowSize.height;
+		popupBounds.size.height = contentBounds.size.height + self.contentOffset.height + self.contentOffset.height + self.rootArrowSize.height + (self.rootArrowOverlap > 0 ? self.rootArrowOverlap : 0);
 		
 		popupRect.origin.x = contentRect.origin.x - self.contentOffset.width;
 		popupRect.origin.y = contentRect.origin.y - self.contentOffset.height;
@@ -278,10 +286,10 @@
 		// calc popup area
 		popupBounds.origin = CGPointMake(0, 0);
 		popupBounds.size.width = contentBounds.size.width + self.contentOffset.width + self.contentOffset.width;
-		popupBounds.size.height = contentBounds.size.height + self.contentOffset.height + self.contentOffset.height + self.rootArrowSize.height;
+		popupBounds.size.height = contentBounds.size.height + self.contentOffset.height + self.contentOffset.height + self.rootArrowSize.height + (self.rootArrowOverlap > 0 ? self.rootArrowOverlap : 0);
 		
 		popupRect.origin.x = contentRect.origin.x - self.contentOffset.width;
-		popupRect.origin.y = contentRect.origin.y - self.contentOffset.height - self.rootArrowSize.height;
+		popupRect.origin.y = contentRect.origin.y - self.contentOffset.height - self.rootArrowSize.height - self.rootArrowOverlap;
 		popupRect.size = popupBounds.size;
 		
 		// calc self size and rect
@@ -643,11 +651,23 @@
         }
         CGContextRestoreGState(context);
     } else {
-        if (direction & SNPopupViewUp) {
-            // draw background image
-            UIImage *resizeableBackgroundImage = [self.backgroundBoxImage resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
-            
+        // draw background image
+        UIImage *resizeableBackgroundImage = [self.backgroundBoxImage resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10) resizingMode:UIImageResizingModeStretch ];
+        [resizeableBackgroundImage drawInRect:CGRectMake(
+                                                         contentRect.origin.x - self.contentOffset.width,
+                                                         contentRect.origin.y - self.contentOffset.height,
+                                                         contentRect.size.width + (self.contentOffset.width*2),
+                                                         contentRect.size.height + (self.contentOffset.height*2)
+                                                         )];
+        NSInteger XPoint = pointToBeShown.x - ((int)self.backgroundArrowImage.size.width/2);
+        
+        if (direction & SNPopupViewDown) {
+            [self.backgroundArrowImage drawAtPoint:CGPointMake(XPoint, contentRect.origin.y - self.contentOffset.height - self.rootArrowOverlap)];
             // draw arrow
+        } else {
+            UIImage* flippedArrow = [UIImage imageWithCGImage:self.backgroundArrowImage.CGImage
+                                                        scale:1.0 orientation: UIImageOrientationDownMirrored];
+            [flippedArrow drawAtPoint:CGPointMake(XPoint, contentRect.origin.y + contentRect.size.height + self.contentOffset.height + self.rootArrowOverlap - flippedArrow.size.height)];
         }
     }
     

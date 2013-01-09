@@ -33,11 +33,11 @@
 //#define _CONFIRM_REGION
 
 #define SHADOW_OFFSET					CGSizeMake(10, 10)
-#define CONTENT_OFFSET					CGSizeMake(10, 10)
+#define CONTENT_OFFSET					CGSizeMake(15, 15)
 #define POPUP_ROOT_SIZE					CGSizeMake(20, 10)
 #define POPUP_ROOT_Y_OVERLAP			0
 
-#define HORIZONTAL_SAFE_MARGIN			30
+#define HORIZONTAL_SAFE_MARGIN			20
 
 #define POPUP_ANIMATION_DURATION		0.3
 #define DISMISS_ANIMATION_DURATION		0.2
@@ -109,6 +109,7 @@ typedef enum {
 @property (nonatomic) CGSize contentOffset;
 @property (nonatomic) CGSize rootArrowSize;
 @property (nonatomic) NSInteger rootArrowOverlap;
+@property (nonatomic) SNPopupViewDirection forceDirection;
 
 - (id)initWithString:(NSString*)newValue withFontOfSize:(float)newFontSize;
 - (id)initWithString:(NSString*)newValue;
