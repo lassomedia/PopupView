@@ -63,7 +63,7 @@
 
 @implementation SNPopupView
 
-@synthesize title, image, contentView, delegate, shadowOffset, contentOffset, rootArrowOverlap, rootArrowSize, forceDirection;
+@synthesize title, image, contentView, delegate, shadowOffset, contentOffset, rootArrowOverlap, rootArrowSize, forceDirection, attributedTitle;
 
 #pragma mark - Prepare
 
@@ -118,6 +118,22 @@
 		
 		[self setupGradientColors];
 		
+	}
+	return self;
+}
+
+- (id)initWithAttributedString:(NSAttributedString *)stringValue {
+ 	self = [self init];
+	if (self != nil) {
+		attributedTitle = [stringValue copy];
+		
+        // Initialization code
+		[self setBackgroundColor:[UIColor clearColor]];
+		
+		contentBounds = CGRectZero;
+		contentBounds.size = stringValue.size;
+		
+		[self setupGradientColors];
 	}
 	return self;
 }
@@ -674,10 +690,13 @@
 	
 	// draw content
 	if ([title length]) {
-		CGContextSetRGBFillColor(context, 1, 1, 1, 1);
-		UIFont *font = [UIFont boldSystemFontOfSize:fontSize];
-		[title drawInRect:contentRect withFont:font];
+        CGContextSetRGBFillColor(context, 1, 1, 1, 1);
+        UIFont *font = [UIFont boldSystemFontOfSize:fontSize];
+        [title drawInRect:contentRect withFont:font];
 	}
+    if ([attributedTitle length]) {
+        [attributedTitle drawInRect:contentRect];
+    }
 	if (image) {
 		[image drawInRect:contentRect];
 	}

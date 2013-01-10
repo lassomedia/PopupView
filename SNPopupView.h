@@ -82,6 +82,7 @@ typedef enum {
 	CGPoint		pointToBeShown;
 	
 	NSString	*title;
+    NSAttributedString *attributedTitle;
 	UIImage		*image;
 	float		fontSize;
 	
@@ -97,7 +98,8 @@ typedef enum {
 	
 	BOOL		animatedWhenAppering;
 }
-@property (nonatomic, readonly) NSString *title;
+@property (nonatomic, readonly, copy) NSString *title;
+@property (nonatomic, readonly, copy) NSAttributedString *attributedTitle;
 @property (nonatomic, readonly) UIImage *image;
 @property (nonatomic, readonly) UIView *contentView;
 @property (nonatomic, unsafe_unretained) id <SNPopupViewModalDelegate> delegate;
@@ -115,6 +117,7 @@ typedef enum {
 - (id)initWithString:(NSString*)newValue;
 - (id)initWithImage:(UIImage*)newImage;
 - (id)initWithContentView:(UIView*)newContentView contentSize:(CGSize)contentSize;
+- (id)initWithAttributedString:(NSAttributedString *)stringValue;
 
 - (void)showAtPoint:(CGPoint)p inView:(UIView*)inView;
 - (void)showAtPoint:(CGPoint)p inView:(UIView*)inView animated:(BOOL)animated;
