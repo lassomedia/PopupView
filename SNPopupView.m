@@ -31,6 +31,7 @@
 #import "SNPopupView.h"
 
 #import <QuartzCore/QuartzCore.h>
+#import <objc/message.h>
 
 @interface TouchPeekView : UIView {
 	SNPopupView *__unsafe_unretained delegate;
@@ -623,7 +624,7 @@
 	}
 	
 	if ([target respondsToSelector:action]) {
-		[target performSelector:action withObject:self];
+        objc_msgSend(target, action, self);
 	}
 }
 
